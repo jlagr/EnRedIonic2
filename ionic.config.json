@@ -1,0 +1,8 @@
+{
+  "name": "EnRed",
+  "app_id": "0167efad",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
