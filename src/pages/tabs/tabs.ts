@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
 
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
-import { HomePage } from '../home/home';
+import { DashboardPage } from '../dashboard/dashboard';
+import { NewTicketPage } from '../new-ticket/new-ticket';
+import { NotificationsPage } from '../notifications/notifications';
+import { AccountPage } from '../account/account';
+import { NavParams } from 'ionic-angular';
 
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  tab1Root = DashboardPage;
+  tab2Root = NewTicketPage;
+  tab3Root = NotificationsPage;
+  tab4Root = AccountPage;
+  myIndex: number;
 
-  constructor() {
-
+  constructor(navParams: NavParams) {
+    this.myIndex = navParams.data.tabIndex || 0;
   }
 }
