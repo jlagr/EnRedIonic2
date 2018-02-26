@@ -1,35 +1,85 @@
 <ion-header>
-  <ion-navbar color="dark">
+  <ion-navbar color="orange">
     <ion-title>Nuevo Usuario</ion-title>
   </ion-navbar>
 </ion-header>
  
 <ion-content class="login-content" padding>
+    <div class="new_user_title">Solicitud de Nuevo Usuario</div>
+    <div class="new_user_disclamer">Llene los siguietes datos para solicitar un nuevo usuario.<br />
+    Cuando sea autorizado por el administrador recibir&aacute; un correo electr&oacute;nico de aviso y podr&aacute; hacer uso de
+    la aplicaci&oacute;n.
+    </div>
+
+  <p *ngIf="submitAttempt" style="color: red;">Favor de corregir los errores en la forma.</p>
   <div class="login-box">
+      <ion-row>
+          <ion-col>
+            <ion-list no-lines>
+              <form [formGroup] = "registerForm">
+                <ion-item>
+                  <ion-label color="secundary" floating>Nombre Completo</ion-label>
+                  <ion-input type="text" formControlName="nombre" [class.invalid]="!registerForm.controls.nombre.valid && (registerForm.controls.nombre.dirty || submitAttempt)"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label color="secundary" floating>Email</ion-label>
+                  <ion-item class="note" *ngIf="registerForm.controls.email.pending">
+                    <p>Validando el email...</p>
+                </ion-item>
+                <ion-input type="email" formControlName="email"
+                    [class.invalid]="!registerForm.controls.email.valid && (registerForm.controls.email.dirty || submitAttempt)"></ion-input>
+                </ion-item>
+                <ion-item class="note" *ngIf="!registerForm.controls.email.valid  && (registerForm.controls.email.dirty || submitAttempt)">
+                  <ion-note item-start>* Este email ya existe en la base de datos o tiene un formato incorrecto.</ion-note>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="secundary" floating>Teléfono Movil a 10 digitos</ion-label>
+                    <ion-input type="number" formControlName="movil"
+                      [class.invalid]="!registerForm.controls.movil.valid && (registerForm.controls.movil.dirty || submitAttempt)"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="secundary" floating>Proveedor Movil</ion-label>
+                    <ion-select formControlName="proveedor" okText="OK" cancelText="Cancelar">
+                      <ion-option value="Telcel" checked="true">Telcel</ion-option>
+                      <ion-option value="AT&T">AT&T</ion-option>
+                      <ion-option value="Movistar">Movistar</ion-option>
+                      <ion-option value="Otro">Otro</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item class="note">
+                    <ion-note item-start>
+                        Password: mínimo 8 caractéres, almenos una mayúscula, por lo menos un número y un caractér especial
+                    </ion-note>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="secundary" floating>Password</ion-label>
+                    <ion-input [type]="password_type" formControlName="password"
+                    [class.invalid]="!registerForm.controls.password.valid && (registerForm.controls.password.dirty || submitAttempt)"></ion-input>
+                </ion-item>
+                <ion-item class="note" *ngIf="!registerForm.controls.password.valid  && (registerForm.controls.password.dirty || submitAttempt)">
+                  <ion-note item-start>* El password no cumple las reglas de seguridad.</ion-note>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="secundary" floating>Repita el password</ion-label>
+                    <ion-input [type]="password_type" formControlName="repassword"
+                     [class.invalid]="!registerForm.controls.repassword.valid && (registerForm.controls.repassword.dirty || submitAttempt)"></ion-input>
+                </ion-item>
+                <ion-item class="note" *ngIf="!registerForm.controls.repassword.valid">
+                  <ion-note item-start>* Los dos passwords deben ser iguales.</ion-note>
+                </ion-item>
+              </form>
+
+              <ion-row>
+                  <ion-col class="signup-col">
+                    <button ion-button class="cancel-btn" (click)="cancelRegister()">Cancelar</button>
+                  </ion-col>
+                  <ion-col class="signup-col">
+                    <button ion-button class="submit-btn" color="primary" (click)="saveRegister()">Solicitar</button>
+                  </ion-col>
+              </ion-row>
+            </ion-list>
+          </ion-col>
+      </ion-row>
     
-    <form (ngSubmit)="register()" #registerForm="ngForm">
-      <ion-row>
-        <ion-col>
-          <ion-list inset>
-            
-            <ion-item>
-              <ion-input type="email" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
-            </ion-item>
-            
-            <ion-item>
-              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
-            </ion-item>
-            
-          </ion-list>
-        </ion-col>
-      </ion-row>
-      
-      <ion-row>
-        <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Register</button>
-        </ion-col>
-      </ion-row>
-      
-    </form>
   </div>
 </ion-content>

@@ -14,5 +14,10 @@
 
 
 <ion-content padding>
-
+ Empresa: <ion-label color="secundary"> {{ currentUser.empresa }}</ion-label>
+ <ion-row>
+  <ion-col class="signup-col">
+    <button ion-button class="submit-btn" color="primary" (click)="test()">Token</button>
+  </ion-col>
+</ion-row>
 </ion-content>

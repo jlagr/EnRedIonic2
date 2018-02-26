@@ -1,11 +1,24 @@
 page-register {
+  .new_user_title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .new_user_disclamer {
+    font-size: 12px;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
     .login-content {
-      background: #56CA96;
+      background: #ffffff;
    
       .login-box {
-        background: #509287;
-        padding: 20px 20px 0px 20px;
-        margin-top: 30px;
+        background: #0592d9;
+        border-radius: 10px !important;
+        padding: 5px 5px 0px 5px;
+        margin-top: 10px;
       }
    
       ion-row {
@@ -14,15 +27,28 @@ page-register {
        }
    
        ion-item {
-           border-radius: 30px !important;
-           padding-left: 30px !important;
+           border-radius: 5px !important;
+           padding-left: 5px !important;
            font-size: 0.9em;
            margin-bottom: 10px;
            border: 1px solid #ffffff;
            border-bottom: 0px !important;
            box-shadow: none !important;
        }
-   
+       
+       ion-note {
+        font-size: 0.9em;
+        text-align: left;
+        margin-bottom: 5px;
+        align-content: left;
+        color: white;
+       }
+       .note {
+         background: transparent;
+         border-color: transparent;
+         border-width: 0px !important;
+         border-radius: 0px !important;
+       }
        .signup-col {
          margin: 0px 16px 0px 16px;
          padding-bottom: 20px;
@@ -33,10 +59,22 @@ page-register {
          box-shadow: none !important;
        }
    
+       .cancel-btn{
+        background: #84b3f9;
+        border-radius: 30px !important;
+        border: 1px solid #ffffff;
+       }
        .submit-btn {
-         background: #51CFB1;
+         background: orange;
          border-radius: 30px !important;
          border: 1px solid #ffffff;
        }
+       .invalid {
+          color: red;
+          font-weight: bold;
+        }
+        .eye-btn {
+          color: #84b3f9;
+        }
     }
   }

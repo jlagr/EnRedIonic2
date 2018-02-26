@@ -10,6 +10,7 @@ page-login {
  
     .login-box {
       background: #0592d9;
+      border-radius: 10px !important;
       opacity: 0.9;
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
@@ -41,7 +42,7 @@ page-login {
      }
  
      .submit-btn {
-       background: #db8b36;
+       background: orange;
        border-radius: 30px !important;
        border: 1px solid #ffffff;
      }
@@ -50,6 +51,10 @@ page-login {
        color: #ffffff;
        font-size: 0.8em;
      }
+
+     .eye-btn {
+      color: #84b3f9;
+    }
   }
  
 }
