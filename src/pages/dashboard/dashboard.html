@@ -1,6 +1,6 @@
 <ion-header>
     
-  <ion-navbar>
+  <ion-navbar color="orange">
       <ion-title>Dashboard</ion-title>
       <ion-buttons start>
           <button ion-button menuToggle>
@@ -9,15 +9,45 @@
         </ion-buttons>  
     
   </ion-navbar>
-
+  <ion-toolbar class="search-bar">
+      <ion-segment [(ngModel)]="viewSelect" color="primary" (ionChange)="segmentChanged($event)" *ngIf="currentUser.rol == 'user'">
+          <ion-segment-button value="mios">
+            Mis tickets
+          </ion-segment-button>
+          <ion-segment-button value="empresa">
+            De mi empresa
+          </ion-segment-button>
+        </ion-segment>
+      <ion-searchbar placeholder="Buscar" (ionInput)="folterItems($event)"  
+       class="search-bar"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
- Empresa: <ion-label color="secundary"> {{ currentUser.empresa }}</ion-label>
- <ion-row>
-  <ion-col class="signup-col">
-    <button ion-button class="submit-btn" color="primary" (click)="test()">Token</button>
-  </ion-col>
-</ion-row>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+      pullingText="Soltar para refrescar"
+      refreshingSpinner="circles"
+      refreshingText="Cargando...">
+    </ion-refresher-content>
+    </ion-refresher>
+    <ion-label *ngIf="ticketList == undefined || ticketList.length == 0">Aun no hay tickets para mostrar</ion-label>
+    <ion-list>
+        <button ion-item *ngFor="let ticket of ticketList" (click)="openTicketDetails(ticket)">
+            <ion-icon name="md-settings" item-start color="green2" *ngIf="ticket.estatus == 'abierto'"></ion-icon>
+            <ion-icon name="ios-build" item-start color="primary" *ngIf="ticket.estatus == 'en proceso'"></ion-icon>
+            <ion-icon name="ios-settings" item-start color="red" *ngIf="ticket.estatus == 'cerrado'"></ion-icon>
+            <h2>{{ticket.id}} - {{ticket.titulo}}</h2>
+            <ion-row>
+                <ion-col>
+                  <p class="ticket-date">ABR: {{ticket.fecha | date:'dd/MMM/yyyy'}}</p>
+                </ion-col>
+                <ion-col>
+                    <p class="ticket-date">ACT: {{ticket.lastUpdate | date:'dd/MMM/yyyy'}}</p>
+                </ion-col>
+              </ion-row>
+          </button> 
+      </ion-list>
 </ion-content>

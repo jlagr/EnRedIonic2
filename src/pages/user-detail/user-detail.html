@@ -1,0 +1,75 @@
+<ion-header>
+
+  <ion-navbar color="orange">
+    <ion-title>{{user.nombre}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="account-content" padding>
+    <p *ngIf="submitAttempt" style="color: red;">Favor de corregir los errores en la forma.</p>
+    <div class="account-box">
+        <ion-row>
+          <ion-col>
+            <ion-list no-lines>
+              <form [formGroup] = "userForm">
+                  <ion-item style="display:none">
+                      <ion-label color="secundary" floating>Id</ion-label>
+                      <ion-input type="text" formControlName="id" readonly="true"></ion-input>
+                    </ion-item>
+                  <ion-item>
+                      <ion-label color="secundary" floating>Nombre</ion-label>
+                      <ion-input type="text" formControlName="nombre" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label color="secundary" floating>Email</ion-label>
+                        <ion-input type="text" formControlName="email" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label color="secundary" floating>Teléfono Movil</ion-label>
+                        <ion-input type="number" formControlName="movil" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label color="secundary" floating>Proveedor Movil</ion-label>
+                        <ion-input type="text" formControlName="proveedorMovil" readonly="true"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label color="secundary" floating>Empresa</ion-label>
+                        <ion-select formControlName="empresa" okText="OK" cancelText="Cancelar">
+                            <ion-option *ngFor="let empresa of empresas" [value]="empresa.id">
+                                {{ empresa.nombre }}
+                            </ion-option>
+                          </ion-select>
+                    </ion-item>
+                    <ion-item class="note" *ngIf="!userForm.controls.empresa.valid  && (userForm.controls.empresa.dirty || submitAttempt)">
+                        <ion-note item-start>* La empresa es un dato obligatorio.</ion-note>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label color="secundary" floating>Rol</ion-label>
+                        <ion-select formControlName="rol" okText="OK" cancelText="Cancelar">
+                          <ion-option value="3" checked="true">Usuario</ion-option>
+                          <ion-option value="2">Empleado</ion-option>
+                          <ion-option value="1">Administrador</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label color="#51ff00">Usuario activo</ion-label>
+                        <ion-toggle formControlName="activo" checked="user.activo"></ion-toggle>                    
+                    </ion-item>
+              </form>
+              <!-- <form [formGroup] = "userForm">
+                
+                  
+                
+              </form> -->
+            </ion-list>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="signup-col">
+            <button ion-button class="submit-btn" color="primary" (click)="updateUser()">Actualizar</button>
+          </ion-col>
+        </ion-row>
+      </div>
+</ion-content>

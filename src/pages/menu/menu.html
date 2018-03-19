@@ -7,11 +7,15 @@
  
   <ion-content>
     <ion-list>
-      <button ion-item menuClose>
+      <button ion-item menuClose (click)="logout()">
           <ion-icon item-start name="log-out"></ion-icon>
           Cerrar Sesion
       </button>
-      <button ion-item menuClose>
+      <button ion-item menuClose (click)="goToDashboard()">
+          <ion-icon item-start name="pulse"></ion-icon>
+          Dashboard
+      </button>
+      <button ion-item menuClose [class.hide]="currentUserRol != 'admin'" (click)="goToAdmin()">
           <ion-icon item-start name="options"></ion-icon>
           Administración
       </button>

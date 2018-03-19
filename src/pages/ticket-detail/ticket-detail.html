@@ -1,12 +1,70 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Ticket</ion-title>
+    <ion-title>{{ticket.id}} - {{ticket.titulo}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="ticket-content">
+    <ion-toolbar class="view-bar">
+        <ion-segment [(ngModel)]="viewSelect" color="primary" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="text">
+              <ion-icon name="md-chatboxes"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button value="gallery">
+              <ion-icon name="ios-camera"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button value="geopoint">
+              <ion-icon name="ios-navigate"></ion-icon>
+            </ion-segment-button>
+          </ion-segment>
+    </ion-toolbar>
 
+    <div [ngSwitch]="viewSelect" class="ticket-box">
+        <div *ngSwitchCase = "'text'">
+            <ion-row>
+                <ion-col>
+                    <ion-note item-end>ABR: {{ticket.fecha | date:'dd/MMM/yyyy'}}</ion-note>
+                </ion-col>
+                <ion-col>
+                    <ion-note item-end>ACT: {{ticket.lastUpdate | date:'dd/MMM/yyyy'}}</ion-note>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-list no-lines>
+                        <form [formGroup] = "ticketForm">
+                            <ion-item>
+                                <ion-label color="secundary" floating>Titulo</ion-label>
+                                <ion-input type="text" max="100" formControlName="titulo" readonly="true"></ion-input>
+                              </ion-item>
+                              <ion-item>
+                                  <ion-label color="secundary" floating>Descripcion</ion-label>
+                                  <ion-textarea type="text" max="500" rows="15" formControlName="descripcion" readonly="true"></ion-textarea>
+                              </ion-item>
+                              <ion-item>
+                                  <ion-label color="secundary" floating>Comentarios</ion-label>
+                                  <ion-textarea type="text" max="500" rows="15" formControlName="comentarios" readonly="true"></ion-textarea>
+                              </ion-item>
+                        </form>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col class="signup-col">
+                  <button ion-button class="submit-btn" color="primary" (click)="updateTicket()">Actualizar</button>
+                </ion-col>
+            </ion-row>
+        </div>
+
+        <div *ngSwitchCase = "'gallery'">
+            <p>Galeria del ticket</p>
+        </div>
+        
+        <div *ngSwitchCase = "'geopoint'">
+            <p>Geopoint del ticket</p>
+        </div>
+    </div>
 </ion-content>

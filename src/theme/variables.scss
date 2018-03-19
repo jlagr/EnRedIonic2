@@ -39,10 +39,36 @@ $colors: (
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-orange:     orange
+#51ff00:     orange,
+blue: #0592d9,
+green: #51ff00,
+red: red,
+green2: #2f9101,
 );
 
+//Toast variables
+$toast-width: 98%;;
+$toast-ios-border-radius: 5px;
+$toast-md-border-radius: 5px;
+$toast-ios-title-font-size: 12px;
+$toast-md-title-font-size: 12px;
+$toast-ios-background: #000000;
+$toast-md-background: #000000;
 
+//Popover 
+$popover-ios-arrow-background:  orange;
+$popover-md-arrow-background:  orange;
+$popover-md-border-radius: 5px;
+$popover-wp-border: 0px solid #ccc;
+$popover-ios-border: 0px solid #ccc;
+
+//details row
+$item-md-detail-push-show: true;
+$item-ios-detail-push-show: true;
+
+//toogle
+$toggle-ios-background-color-on: #51ff00;
+$toggle-md-background-color-on: #51ff00;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

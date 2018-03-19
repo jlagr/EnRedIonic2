@@ -1,3 +1,75 @@
 page-ticket-detail {
+    .ticket-content {
+        background: #ffffff;
+        margin-right: 10px;
 
+        .ticket-box {
+          background: #0592d9;
+          border-radius: 10px !important;
+          padding: 5px 5px 0px 5px;
+          margin-top: 10px;
+          margin-left: 10px;
+          margin-right: 10px;
+        }
+
+        ion-row {
+            align-items: center;
+            text-align: center;
+          }
+      
+          ion-item {
+              border-radius: 5px !important;
+              padding-left: 5px !important;
+              font-size: 0.9em;
+              margin-bottom: 10px;
+              border: 1px solid #ffffff;
+              border-bottom: 0px !important;
+              box-shadow: none !important;
+          }
+          
+          ion-textarea {
+              height: 100px;
+          }
+          ion-note {
+           font-size: 0.9em;
+           text-align: left;
+           margin-bottom: 5px;
+           align-content: left;
+           color: white;
+          }
+          .note {
+            background: transparent;
+            border-color: transparent;
+            border-width: 0px !important;
+            border-radius: 0px !important;
+          }
+          .signup-col {
+            margin: 0px 16px 0px 16px;
+            padding-bottom: 20px;
+          }
+      
+          .item-inner {
+            border-bottom-color: #ffffff !important;
+            box-shadow: none !important;
+          }
+      
+          .cancel-btn{
+           background: #84b3f9;
+           border-radius: 30px !important;
+           border: 1px solid #ffffff;
+          }
+
+          .submit-btn {
+            background: orange;
+            border-radius: 30px !important;
+            border: 1px solid #ffffff;
+          }
+
+          .invalid {
+             color: red;
+             font-weight: bold;
+            }
+          
+          
+    }
 }

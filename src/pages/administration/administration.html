@@ -1,0 +1,52 @@
+<ion-header>
+
+  <ion-navbar color="orange">
+    <ion-title>Administración</ion-title>
+    <ion-buttons end>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons> 
+  </ion-navbar>
+  <ion-toolbar class="search-bar">
+      <ion-segment [(ngModel)]="administration" color="primary" (ionChange)="segmentChanged($event)">
+          <ion-segment-button value="users">
+              <ion-icon name="ios-people"></ion-icon>
+                Usuarios
+          </ion-segment-button>
+          <ion-segment-button value="notifications">
+            <ion-icon name="ios-chatboxes"></ion-icon>
+            Notificaciones
+          </ion-segment-button>
+        </ion-segment>
+      <ion-searchbar placeholder="Buscar" (ionInput)="folterItems($event)"  
+       class="search-bar"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="admin-content" padding>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+      pullingText="Soltar para refrescar"
+      refreshingSpinner="circles"
+      refreshingText="Cargando...">
+    </ion-refresher-content>
+    </ion-refresher>
+        <div [ngSwitch]="administration" class="list-box">
+          <ion-list *ngSwitchCase = "'users'">
+            <button ion-item *ngFor="let user of userList" (click)="openUserDetails(user)">
+                <ion-icon name="md-key" item-start color="green" *ngIf="user.activo == 1"></ion-icon>
+                <ion-icon name="md-key" item-start color="red" *ngIf="user.activo == 0"></ion-icon>
+                <h2>{{user.nombre}}</h2>
+                <p>{{user.empresa}}</p>
+              </button> 
+          </ion-list>
+          
+          <ion-list *ngSwitchCase = "'notifications'">
+            <ion-item>
+              <p>Administración de Notificaciones</p>
+            </ion-item>
+        </ion-list>
+        </div>
+</ion-content>

@@ -2,66 +2,60 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Loading, LoadingController, ViewController, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { TabsPage } from './../tabs/tabs';
-import { LoginPage } from '../login/login';
+import { RepasswordValidator } from '../../validators/repassword';
 
 @IonicPage()
 @Component({
-  selector: 'page-account',
-  templateUrl: 'account.html',
+  selector: 'page-reset-password',
+  templateUrl: 'reset-password.html',
 })
-export class AccountPage {
-  accountForm: FormGroup;
+export class ResetPasswordPage {
+  resetForm: FormGroup;
   submitAttempt: boolean = false;
   debouncer: any;
   loading: Loading;
+  email: any = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, 
     private auth: AuthServiceProvider, private loadingCtrl: LoadingController, 
     public viewCtrl: ViewController, private toastCtrl: ToastController) {
+    //this.showMessage("El password se actualizó correctamente");
+    this.email = this.navParams.get('email');
 
-    this.accountForm = formBuilder.group({
-        nombre: [this.auth.currentUser.nombre, Validators.required],
-        email: [this.auth.currentUser.email],
-        empresa: [this.auth.currentUser.empresa],
-        movil: [this.auth.currentUser.movil],
-        proveedor: [this.auth.currentUser.proveedor, Validators.required]
+    this.resetForm = formBuilder.group({
+      email: [this.email],
+      password: ['', Validators.compose([Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$@$!%*?&]).{8,20}$'), Validators.required])],
+      repassword: ['', RepasswordValidator.isSame]
     });
   }
 
-  private cancel() {
-    this.navCtrl.push(TabsPage,{tabIndex:0});
+  cancelReset() {
+    this.resetForm.reset();
+    this.viewCtrl.dismiss();
   }
 
-  private updateAccount(){
+  saveReset() {
     this.submitAttempt = true;
     
-    if(this.accountForm.valid) {
+    if(this.resetForm.valid) {
       this.showLoading();
-      this.submitAttempt = false;
       clearTimeout(this.debouncer);
       this.debouncer = setTimeout(() => {
-        this.auth.updateAccount(this.accountForm.value).subscribe(res => {
+        this.auth.changePassword(this.resetForm.value).subscribe(res => {
           //console.log(res);
           this.dismissLoading();
           if (res.success) {
-            //this.accountForm.reset();
-            this.auth.currentUser.nombre = this.accountForm.value.nombre;
-            this.auth.currentUser.movil = this.accountForm.value.movil;
-            this.auth.currentUser.proveedor = this.accountForm.value.proveedor;
-            this.navCtrl.push(TabsPage,{tabIndex:0});
-            this.showMessage("Sus datos se actualizaron correctamente");
+            this.resetForm.reset();
+            this.viewCtrl.dismiss();
+            this.showMessage("El password se actualizó correctamente");
           } else {
-            this.showError("No fue posible actualizar los datos, comuniquese con el administrador de la aplicación");
+            this.showError("No fue posible actualizar el password, comuniquese con el administrador de la aplicación");
           }
         },
           error => {
-            //console.log(error);
             this.dismissLoading();
+            //console.log(error);
             this.showError(error);
-            if(error.status == 401){ //Sesion expiró
-              this.navCtrl.setRoot(LoginPage);
-           }
           });
       },2000);
     }
@@ -69,7 +63,7 @@ export class AccountPage {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: 'Actulizando...',
+      content: 'Actualizando...',
       dismissOnPageChange: true
     });
     this.loading.present();
@@ -97,7 +91,6 @@ export class AccountPage {
   }
 
   showError(message){
-    this.dismissLoading();
     let toast = this.toastCtrl.create({
       message: message,
       duration: 10000,
@@ -110,7 +103,7 @@ export class AccountPage {
   }
 
   ionViewDidLoad() {
-    //console.log('ionViewDidLoad AccountPage');
+    //console.log('ionViewDidLoad ResetPasswordPage');
   }
 
 }

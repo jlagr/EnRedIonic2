@@ -17,3 +17,8 @@ export const API_ENDPOINT = {
     user: 'user',
     public: 'public'
   }
+
+  export const STORE_KEYS = {
+    token: 'EnRedToken',
+    email: 'EnRedUserEmail'
+  }

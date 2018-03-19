@@ -6,7 +6,50 @@
 
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content class="account-content" padding>
+  <p *ngIf="submitAttempt" style="color: red;">Favor de corregir los errores en la forma.</p>
+  <div class="account-box">
+    <ion-row>
+      <ion-col>
+        <ion-list no-lines>
+          <form [formGroup] = "accountForm">
+            <ion-item>
+              <ion-label color="secundary" floating>Nombre</ion-label>
+                <ion-input type="text" formControlName="nombre"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label color="secundary" floating>Email</ion-label>
+                <ion-input type="text" formControlName="email" readonly="true"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label color="secundary" floating>Empresa</ion-label>
+                  <ion-input type="text" formControlName="empresa" readonly="true"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label color="secundary" floating>Teléfono Movil a 10 digitos</ion-label>
+                <ion-input type="number" formControlName="movil"
+                  [class.invalid]="!accountForm.controls.movil.valid && (accountForm.controls.movil.dirty || submitAttempt)"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label color="secundary" floating>Proveedor Movil</ion-label>
+                <ion-select formControlName="proveedor" okText="OK" cancelText="Cancelar">
+                  <ion-option value="Telcel" checked="true">Telcel</ion-option>
+                  <ion-option value="AT&T">AT&T</ion-option>
+                  <ion-option value="Movistar">Movistar</ion-option>
+                  <ion-option value="Otro">Otro</ion-option>
+                </ion-select>
+            </ion-item>
+          </form>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="signup-col">
+        <button ion-button class="cancel-btn" (click)="cancel()">Cancelar</button>
+      </ion-col>
+      <ion-col class="signup-col">
+        <button ion-button class="submit-btn" color="primary" (click)="updateAccount()">Actualizar</button>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>

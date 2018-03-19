@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController, Loading, LoadingController, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, Loading, LoadingController, PopoverController, ToastController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { LoginPopoverPage } from '../../pages/login-popover/login-popover';
 import { TabsPage } from '../tabs/tabs';
@@ -18,7 +18,14 @@ export class LoginPage {
 
   constructor(private navCtrl: NavController, private auth: AuthServiceProvider, 
     private alertCtrl: AlertController, private loadingCtrl: LoadingController,
-    public popoverCtrl: PopoverController) {
+    public popoverCtrl: PopoverController, private toastCtrl: ToastController, ) {
+    this.auth.getStoredEmail().then((res) => {
+      this.registerCredentials.email = res;
+      if(res === 'jlagr@outlook.com'){
+        this.registerCredentials.password = "Ocampo#1318";
+      }
+    });
+    
   }
 
   public createAccount() {
@@ -73,17 +80,6 @@ export class LoginPage {
     this.loading.present();
   }
  
-  showError(text) {
-    this.dismissLoading();
- 
-    let alert = this.alertCtrl.create({
-      title: 'Error',
-      subTitle: text,
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
   dismissLoading(){
     if(this.loading){
         this.loading.dismiss();
@@ -150,7 +146,7 @@ export class LoginPage {
     this.auth.passwordReset(email).subscribe(res => {
       if(res.success){
         this.registerCredentials.email = '';
-        this.showResetMessage();
+        this.showMessage("Se envió un mail con el código para cambiar su password. Revise su bandeja de entrada y/o de elementos no deseados. Por seguridad el código tiene una caducidad de 24 horas.")
       }
     },
       error => {
@@ -158,15 +154,6 @@ export class LoginPage {
         //console.log("Error: " + response);
         this.showError(response.msg);
       });
-  }
-
-  showResetMessage(){
-    let alert = this.alertCtrl.create({
-      title: '',
-      subTitle: "Se envió un mail con el código para cambiar su password. Revise su bandeja de entrada y/o de elementos no deseados. Por seguridad el código tiene una caducidad de 24 horas.",
-      buttons: ['OK']
-    });
-    alert.present(); 
   }
 
   ionViewDidLoad() {
@@ -179,4 +166,30 @@ export class LoginPage {
     //popover.onDidDismiss();
   }
 
+  showMessage(message){
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'middle',
+      cssClass: "toastBox",
+    });
+    toast.onDidDismiss(() => {
+      //console.log('Dismissed toast');
+    });
+  
+    toast.present();
+  }
+
+  showError(message){
+    this.dismissLoading();
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 10000,
+      position: 'buttom',
+      showCloseButton: true,
+      closeButtonText: 'Ok',
+      cssClass: 'toastBox'
+    });
+    toast.present();
+  }
 }

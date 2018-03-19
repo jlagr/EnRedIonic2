@@ -4,7 +4,7 @@ import { DashboardPage } from '../dashboard/dashboard';
 import { NewTicketPage } from '../new-ticket/new-ticket';
 import { NotificationsPage } from '../notifications/notifications';
 import { AccountPage } from '../account/account';
-import { NavParams } from 'ionic-angular';
+import { NavParams, Select } from 'ionic-angular';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -19,5 +19,6 @@ export class TabsPage {
 
   constructor(navParams: NavParams) {
     this.myIndex = navParams.data.tabIndex || 0;
+    
   }
 }

@@ -2,6 +2,8 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 
 import { LoginPage } from '../pages/login/login';
@@ -15,11 +17,15 @@ import { NewTicketPage } from '../pages/new-ticket/new-ticket';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { NotificationDetailPage } from '../pages/notification-detail/notification-detail'
 import { AccountPage } from '../pages/account/account';
-
+import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { EmailValidator } from '../validators/email';
+import { AdministrationPage } from '../pages/administration/administration';
+import { AdminServiceProvider } from '../providers/admin-service/admin-service';
+import { UserDetailPage } from '../pages/user-detail/user-detail';
+import { TicketServiceProvider } from '../providers/ticket-service/ticket-service';
 
 @NgModule({
   declarations: [
@@ -33,7 +39,9 @@ import { EmailValidator } from '../validators/email';
     NewTicketPage,
     NotificationsPage,
     NotificationDetailPage,
-    AccountPage
+    AccountPage,
+    ResetPasswordPage,
+    UserDetailPage
   ],
   imports: [
     BrowserModule,
@@ -41,9 +49,11 @@ import { EmailValidator } from '../validators/email';
     IonicModule.forRoot(MyApp, { 
       links: [
         {component: RegisterPage, name: 'Register' , segment: 'register'},
-        {component: LoginPage, name: 'Login' , segment: 'login' }
+        {component: LoginPage, name: 'Login' , segment: 'login' },
+        {component: AdministrationPage, name: 'Administration' , segment: 'administration' },
       ]
-    })
+    }),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -57,14 +67,19 @@ import { EmailValidator } from '../validators/email';
     NewTicketPage,
     NotificationsPage,
     NotificationDetailPage,
-    AccountPage
+    AccountPage,
+    ResetPasswordPage,
+    UserDetailPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-    EmailValidator
+    EmailValidator,
+    BarcodeScanner,
+    AdminServiceProvider,
+    TicketServiceProvider
   ]
 })
 export class AppModule {}
