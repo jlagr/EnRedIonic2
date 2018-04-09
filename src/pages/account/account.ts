@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Loading, LoadingController, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Loading, LoadingController, ViewController, ToastController, App } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { TabsPage } from './../tabs/tabs';
@@ -18,7 +18,8 @@ export class AccountPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, 
     private auth: AuthServiceProvider, private loadingCtrl: LoadingController, 
-    public viewCtrl: ViewController, private toastCtrl: ToastController) {
+    public viewCtrl: ViewController, private toastCtrl: ToastController,
+    private app: App) {
 
     this.accountForm = formBuilder.group({
         nombre: [this.auth.currentUser.nombre, Validators.required],
@@ -113,4 +114,12 @@ export class AccountPage {
     //console.log('ionViewDidLoad AccountPage');
   }
 
+  private logout() {
+    this.auth.logout().subscribe(res => {
+      this.app.getRootNav().setRoot(LoginPage);
+    },
+      error => {
+        this.showError(error);
+      });
+  }
 }

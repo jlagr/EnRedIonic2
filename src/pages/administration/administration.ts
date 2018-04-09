@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, Loading, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, App, NavParams, ToastController, Loading, LoadingController } from 'ionic-angular';
 import { AdminServiceProvider } from '../../providers/admin-service/admin-service';
+import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { UserDetailPage } from '../../pages/user-detail/user-detail';
 import { LoginPage } from '../login/login';
 
@@ -16,7 +17,8 @@ export class AdministrationPage {
   userListAll: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public admServ: AdminServiceProvider, 
-    private toastCtrl: ToastController, private loadingCtrl: LoadingController) {
+    private toastCtrl: ToastController, private loadingCtrl: LoadingController,
+    private auth: AuthServiceProvider, private app:App) {
     this.administration = "users";
     this.doRefresh(0);
     //this.userList = [{nombre:"hugo"}, {nombre:"paco"},{nombre:"luis"}];
@@ -51,10 +53,9 @@ export class AdministrationPage {
       }
     },
       error => {
-          
+          console.log("Error: ", error);
           if(error.status == 401){ //Sesion expiró
-            this.showError("La sesión ha caducado");
-            this.navCtrl.setRoot(LoginPage);
+            this.logout();
           }
           else {
             console.log (error)
@@ -147,5 +148,15 @@ export class AdministrationPage {
       if(refresher != 0)
         refresher.complete();
     }, 2000);
+  }
+
+  private logout() {
+    this.showError("La sesion ha caducado");
+    this.auth.logout().subscribe(res => {
+      this.app.getRootNav().setRoot(LoginPage);
+    },
+      error => {
+        this.showError(error);
+      });
   }
 }

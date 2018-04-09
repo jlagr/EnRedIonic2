@@ -63,7 +63,13 @@ page-account {
              color: red;
              font-weight: bold;
             }
-          
+          .logout-row {
+            margin-top:-20px !important;
+          }
+            .logout-btn {
+              color: #ffffff;
+              font-size: 0.8em;
+            }
           
     }
 }

@@ -1,0 +1,26 @@
+
+<ion-header>
+
+  <ion-navbar>
+      <ion-title>{{titulo}}</ion-title>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="closeModal()">
+              <ion-icon item-right name="ios-close-outline"></ion-icon>
+          </button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+ <img [src]="bigImg" imageViewer>
+ <ion-fab right bottom #fab>
+    <button ion-fab color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
+    <ion-fab-list side="left">
+      <button ion-fab><ion-icon name="ios-trash-outline" (click)="showDeleteDialog($event, fab)"></ion-icon></button>
+      <button ion-fab><ion-icon name="md-share"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
+

@@ -5,7 +5,8 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
-
+import { Camera } from '@ionic-native/camera';
+import { Geolocation } from '@ionic-native/geolocation';
 import { LoginPage } from '../pages/login/login';
 import { LoginPopoverPage } from '../pages/login-popover/login-popover'
 import { RegisterPage } from '../pages/register/register';
@@ -26,6 +27,8 @@ import { AdministrationPage } from '../pages/administration/administration';
 import { AdminServiceProvider } from '../providers/admin-service/admin-service';
 import { UserDetailPage } from '../pages/user-detail/user-detail';
 import { TicketServiceProvider } from '../providers/ticket-service/ticket-service';
+import { ImagepagePage } from '../pages/imagepage/imagepage';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 @NgModule({
   declarations: [
@@ -41,19 +44,22 @@ import { TicketServiceProvider } from '../providers/ticket-service/ticket-servic
     NotificationDetailPage,
     AccountPage,
     ResetPasswordPage,
-    UserDetailPage
+    UserDetailPage,
+    ImagepagePage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp, { 
+      tabsHideOnSubPages: true,
       links: [
         {component: RegisterPage, name: 'Register' , segment: 'register'},
         {component: LoginPage, name: 'Login' , segment: 'login' },
         {component: AdministrationPage, name: 'Administration' , segment: 'administration' },
       ]
     }),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    IonicImageViewerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -69,17 +75,20 @@ import { TicketServiceProvider } from '../providers/ticket-service/ticket-servic
     NotificationDetailPage,
     AccountPage,
     ResetPasswordPage,
-    UserDetailPage
+    UserDetailPage,
+    ImagepagePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
     EmailValidator,
     BarcodeScanner,
     AdminServiceProvider,
-    TicketServiceProvider
+    TicketServiceProvider,
+    Camera
   ]
 })
 export class AppModule {}

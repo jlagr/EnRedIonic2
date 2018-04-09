@@ -35,11 +35,11 @@
     </ion-refresher>
     <ion-label *ngIf="ticketList == undefined || ticketList.length == 0">Aun no hay tickets para mostrar</ion-label>
     <ion-list>
-        <button ion-item *ngFor="let ticket of ticketList" (click)="openTicketDetails(ticket)">
+        <button ion-item no-lines *ngFor="let ticket of ticketList" (click)="openTicketDetails(ticket)">
             <ion-icon name="md-settings" item-start color="green2" *ngIf="ticket.estatus == 'abierto'"></ion-icon>
             <ion-icon name="ios-build" item-start color="primary" *ngIf="ticket.estatus == 'en proceso'"></ion-icon>
             <ion-icon name="ios-settings" item-start color="red" *ngIf="ticket.estatus == 'cerrado'"></ion-icon>
-            <h2>{{ticket.id}} - {{ticket.titulo}}</h2>
+            <h2 class="ticket-titulo">{{ticket.id}} - {{ticket.titulo}}</h2>
             <ion-row>
                 <ion-col>
                   <p class="ticket-date">ABR: {{ticket.fecha | date:'dd/MMM/yyyy'}}</p>
@@ -47,7 +47,7 @@
                 <ion-col>
                     <p class="ticket-date">ACT: {{ticket.lastUpdate | date:'dd/MMM/yyyy'}}</p>
                 </ion-col>
-              </ion-row>
+            </ion-row>
           </button> 
       </ion-list>
 </ion-content>

@@ -1,70 +1,107 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>{{ticket.id}} - {{ticket.titulo}}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content class="ticket-content">
-    <ion-toolbar class="view-bar">
+    <ion-navbar>
+        <ion-title>{{componentTitle}}</ion-title>
+    </ion-navbar>
+    <ion-toolbar>
         <ion-segment [(ngModel)]="viewSelect" color="primary" (ionChange)="segmentChanged($event)">
             <ion-segment-button value="text">
-              <ion-icon name="md-chatboxes"></ion-icon>
+                <ion-icon name="md-chatboxes"></ion-icon>
             </ion-segment-button>
             <ion-segment-button value="gallery">
-              <ion-icon name="ios-camera"></ion-icon>
+                <ion-icon name="md-apps"></ion-icon>
             </ion-segment-button>
             <ion-segment-button value="geopoint">
-              <ion-icon name="ios-navigate"></ion-icon>
+                <ion-icon name="ios-navigate"></ion-icon>
             </ion-segment-button>
-          </ion-segment>
+        </ion-segment>
     </ion-toolbar>
+</ion-header>
 
-    <div [ngSwitch]="viewSelect" class="ticket-box">
-        <div *ngSwitchCase = "'text'">
+<ion-content class="ticket-content">
+    <div [ngSwitch]="viewSelect">
+        <div *ngSwitchCase="'text'" class="ticket-box">
             <ion-row>
                 <ion-col>
                     <ion-note item-end>ABR: {{ticket.fecha | date:'dd/MMM/yyyy'}}</ion-note>
                 </ion-col>
                 <ion-col>
-                    <ion-note item-end>ACT: {{ticket.lastUpdate | date:'dd/MMM/yyyy'}}</ion-note>
+                    <ion-note item-end *ngIf="ticket.id > 0">ACT: {{ticket.lastUpdate | date:'dd/MMM/yyyy'}}</ion-note>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
                     <ion-list no-lines>
-                        <form [formGroup] = "ticketForm">
+                        <form [formGroup]="ticketForm">
                             <ion-item>
                                 <ion-label color="secundary" floating>Titulo</ion-label>
-                                <ion-input type="text" max="100" formControlName="titulo" readonly="true"></ion-input>
-                              </ion-item>
-                              <ion-item>
-                                  <ion-label color="secundary" floating>Descripcion</ion-label>
-                                  <ion-textarea type="text" max="500" rows="15" formControlName="descripcion" readonly="true"></ion-textarea>
-                              </ion-item>
-                              <ion-item>
-                                  <ion-label color="secundary" floating>Comentarios</ion-label>
-                                  <ion-textarea type="text" max="500" rows="15" formControlName="comentarios" readonly="true"></ion-textarea>
-                              </ion-item>
+                                <ion-input type="text" max="100" formControlName="titulo" [readonly]="editType == 2 || editType == 0"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label color="secundary" floating>Descripcion</ion-label>
+                                <ion-textarea type="text" max="500" rows="15" formControlName="descripcion" [readonly]="editType == 2 || editType == 0"></ion-textarea>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label color="secundary" floating>Comentarios</ion-label>
+                                <ion-textarea type="text" max="500" rows="15" formControlName="comentarios" [readonly]="editType == 3" [disabled]="ticket.id == 0"></ion-textarea>
+                            </ion-item>
                         </form>
                     </ion-list>
                 </ion-col>
             </ion-row>
+            <ion-row style="margin-top:-10px;" *ngIf="ticket.id > 0">
+                <ion-col style="text-align: left;">
+                    <ion-icon name="md-settings" item-start color="green" *ngIf="ticket.estatus == 'abierto'"></ion-icon>
+                    <ion-icon name="ios-build" item-start color="primary" *ngIf="ticket.estatus == 'en proceso'"></ion-icon>
+                    <ion-icon name="ios-settings" item-start color="red" *ngIf="ticket.estatus == 'cerrado'"></ion-icon>
+                    <ion-note item-end *ngIf="editType == 3">{{ticket.estatus}}</ion-note>
+                    <ion-note item-end *ngIf="editType != 3" (click)="changeStatusDialog()">{{ticket.estatus}}</ion-note>
+                </ion-col>
+
+            </ion-row>
             <ion-row>
                 <ion-col class="signup-col">
-                  <button ion-button class="submit-btn" color="primary" (click)="updateTicket()">Actualizar</button>
+                    <button ion-button class="submit-btn" color="primary" (click)="updateTicket()" [disabled]="!ticketForm.valid" *ngIf="ticket.id > 0">Actualizar</button>
+                    <button ion-button class="submit-btn" color="primary" (click)="saveTicket()" [disabled]="!ticketForm.valid" *ngIf="ticket.id == 0">Guardar</button>
                 </ion-col>
             </ion-row>
         </div>
 
-        <div *ngSwitchCase = "'gallery'">
-            <p>Galeria del ticket</p>
+        <div *ngSwitchCase="'gallery'" class="gallery-box">
+            <div class="gallery-empty">
+                <ion-note *ngIf="images == undefined && ticket.id > 0">No hay imagenes en este ticket</ion-note>
+                <ion-note *ngIf="ticket.id == 0">Para poder agregar imagenes al ticket primero debe guardarlo para generar un número identificador.</ion-note>
+            </div>
+
+
+            <ion-grid>
+                <ion-row>
+                    <ion-col class="gallery-col" *ngFor="let image of images">
+                        <div class="image-container" [style.background-image]="'url(' + image.thumbnail + ')'" (click)="openImage(image.id)">
+
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </div>
-        
-        <div *ngSwitchCase = "'geopoint'">
-            <p>Geopoint del ticket</p>
+
+        <div *ngSwitchCase="'geopoint'">
+
         </div>
     </div>
+
+    <div #map id="map" [hidden]="viewSelect != 'geopoint'"></div>
+
+    <ion-fab bottom right *ngIf="viewSelect == 'gallery' && ticket.estatus != 'cerrado' && ticket.id > 0" #fab>
+        <button ion-fab mini>
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+            <button ion-fab (click)="imageFromGallery($event, fab)">
+                <ion-icon name="md-apps"></ion-icon>
+            </button>
+            <button ion-fab (click)="imageFromCamera($event, fab)">
+                <ion-icon name="md-camera"></ion-icon>
+            </button>
+        </ion-fab-list>
+    </ion-fab>
 </ion-content>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { IonicPage, NavController, NavParams, ToastController, Loading, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, ToastController, Loading, LoadingController} from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service'
 import { TicketServiceProvider } from '../../providers/ticket-service/ticket-service';
 import { LoginPage } from '../login/login';
@@ -19,7 +19,7 @@ export class DashboardPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthServiceProvider, 
     public tickets: TicketServiceProvider, private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController, private app: App) {
     this.currentUser = auth.currentUser;
     this.showLoading();
     this.doRefresh(0);
@@ -31,7 +31,7 @@ export class DashboardPage {
   }
 
   private fillAllTickets() {
-    console.log("Llenando todos los tickets");
+    //console.log("Llenando todos los tickets");
     setTimeout(() => {
       this.tickets.getTiketList(this.currentUser.email).subscribe(res => {
         //console.log(res);
@@ -46,9 +46,8 @@ export class DashboardPage {
         
       },
         error => {
-            if(error.status == 401){ //Sesion expiró
-                this.showError("La sesión ha caducado");
-                this.navCtrl.setRoot(LoginPage);
+            if(error.status == 401){ //Sesion expirada
+                this.logout();
             }
             else {
               this.showError(error);
@@ -57,7 +56,7 @@ export class DashboardPage {
   }
 
   private fillMisTickets() {
-    console.log("Llenando los tickets");
+    //console.log("Llenando los tickets");
     setTimeout(() => {
       this.tickets.getTiketList(this.currentUser.email).subscribe(res => {
         //console.log(res);
@@ -74,8 +73,7 @@ export class DashboardPage {
       },
         error => {
             if(error.status == 401){ //Sesion expiró
-              this.showError("La sesión ha caducado");
-              this.navCtrl.setRoot(LoginPage);
+              this.logout();
             }
             else {
               console.log(error)
@@ -102,8 +100,7 @@ export class DashboardPage {
         error => {
             
             if(error.status == 401){ //Sesion expiró
-              this.showError("La sesión ha caducado");
-              this.navCtrl.setRoot(LoginPage);
+              this.logout();
             }
             else {
               this.showError(error);
@@ -197,5 +194,15 @@ export class DashboardPage {
       if(refresher != 0)
         refresher.complete();
     }, 2000);
+  }
+
+  private logout() {
+    this.showError("La sesión ha caducado");
+    this.auth.logout().subscribe(res => {
+      this.app.getRootNav().setRoot(LoginPage);
+    },
+      error => {
+        this.showError(error);
+      });
   }
 }

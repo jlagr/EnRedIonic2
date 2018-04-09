@@ -156,10 +156,6 @@ export class LoginPage {
       });
   }
 
-  ionViewDidLoad() {
-    // console.log('ionViewDidLoad LoginPage');
-  }
-
   presentPopover(event) {
     let popover = this.popoverCtrl.create(LoginPopoverPage,{});
     popover.present({ev: event});

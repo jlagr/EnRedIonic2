@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { DashboardPage } from '../dashboard/dashboard';
-import { NewTicketPage } from '../new-ticket/new-ticket';
+import { TicketDetailPage } from '../ticket-detail/ticket-detail';
 import { NotificationsPage } from '../notifications/notifications';
 import { AccountPage } from '../account/account';
 import { NavParams, Select } from 'ionic-angular';
@@ -12,7 +12,7 @@ import { NavParams, Select } from 'ionic-angular';
 export class TabsPage {
 
   tab1Root = DashboardPage;
-  tab2Root = NewTicketPage;
+  tab2Root = TicketDetailPage;
   tab3Root = NotificationsPage;
   tab4Root = AccountPage;
   myIndex: number;
@@ -21,4 +21,9 @@ export class TabsPage {
     this.myIndex = navParams.data.tabIndex || 0;
     
   }
+
+  ionViewWillEnter() {
+    //console.log("tabs activas");
+  }
+
 }

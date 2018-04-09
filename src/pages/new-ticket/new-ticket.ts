@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the NewTicketPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { TicketDetailPage } from '../ticket-detail/ticket-detail'
 
 @IonicPage()
 @Component({
@@ -16,6 +10,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class NewTicketPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.navCtrl.push(TicketDetailPage, {
+      ticket: null
+    })
   }
 
   ionViewDidLoad() {
